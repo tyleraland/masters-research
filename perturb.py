@@ -10,14 +10,14 @@ from random import random
 # Usage: ./perturb.py iterations gene outdir
 # **NOTE: outdir must include trailing '/' **
 
+iters = int(sys.argv[1])
+gene = sys.argv[2]
+outdir = sys.argv[3]
+
 # Tracks number of moved placements
 statfile = open(os.path.dirname(outdir) + "/" + "statfile", 'w') 
 writer = csv.writer(statfile, delimiter=',') 
 writer.writerow(["sample", "moved", "total"])
-
-iters = int(sys.argv[1])
-gene = sys.argv[2]
-outdir = sys.argv[3]
 
 treefile = open(os.path.dirname(outdir) + "/" + gene + "_tree", 'w') # For later calculating branch lengths
 empty_tree = True
