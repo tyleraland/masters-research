@@ -4,25 +4,30 @@ import csv
 import re
 import os
 from glob import glob
-from random import random
+import random
 
-# Assume: .jplace files are all of the form COGs/gene/sample.jplace
+# Assume: .jplace files are all of the form HOME/analysis/gene/sample.jplace
 # Usage: ./perturb.py iterations gene outdir
 # **NOTE: outdir must include trailing '/' **
 
+# Tracks number of moved placements
 iters = int(sys.argv[1])
 gene = sys.argv[2]
 outdir = sys.argv[3]
+rseed = int(sys.argv[4])
+random.seed(rseed)
 
-# Tracks number of moved placements
-statfile = open(os.path.dirname(outdir) + "/" + "statfile", 'w') 
-writer = csv.writer(statfile, delimiter=',') 
-writer.writerow(["sample", "moved", "total"])
 
-treefile = open(os.path.dirname(outdir) + "/" + gene + "_tree", 'w') # For later calculating branch lengths
+#statfile = open(os.environ['HOME'] + "/" + os.path.dirname(outdir) + "/" + "statfile", 'w') 
+statfile = open(outdir + "statfile", 'w')
+statwriter = csv.writer(statfile, delimiter=',') 
+statwriter.writerow(["sample", "moved", "total"])
+
+#treefile = open(os.environ['HOME'] + "/" + os.path.dirname(outdir) + "/" + gene + "_tree", 'w') # For later calculating branch lengths
+treefile = open(outdir + gene + "_tree", 'w') # For later calculating branch lengths
 empty_tree = True
 
-files = glob("COGs/" + gene + "/*.jplace")
+files = glob(os.environ['HOME'] + "/COGs/" + gene + "/*.jplace")
 for iter in range(1,iters+1):
     for filename in files:
         moved = 0
@@ -38,7 +43,7 @@ for iter in range(1,iters+1):
         for read in data["placements"]:
             total += 1
             candl = read["p"]
-            coin = random()
+            coin = random.random()
             orig = candl[0]
             for cand in candl:
                 coin -= cand[3]
@@ -50,11 +55,12 @@ for iter in range(1,iters+1):
             if candl[0] != orig:
                 moved += 1
         sample = os.path.basename(filename)[:-7] + "_" + str(iter)
-        writer.writerow([os.path.basename(sample), moved, str(len(data["placements"]))])
+        statwriter.writerow([os.path.basename(sample), moved, str(len(data["placements"])), str(rseed)])
         #print("Moved " + str(moved) + " of " + str(len(data["placements"])) + " total placements for " + sample)
         #print("outdir: " + outdir)
         #print("sample: " + sample)
-        outpath = os.path.dirname(outdir) + "/" + sample + ".jplace"
+        #outpath = os.environ['HOME'] + "/" + os.path.dirname(outdir) + "/" + sample + ".jplace"
+        outpath = outdir + sample + ".jplace"
         #print("outpath: " + outpath)
         out = open(outpath, 'w')
         out.write(json.dumps(data))

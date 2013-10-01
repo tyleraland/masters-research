@@ -14,12 +14,12 @@ gene <- commandArgs(trailingOnly=T)[2]
 perts <- as.integer(commandArgs(trailingOnly=T)[3])
 #perts = 3
 
-direc = file.path("~/Code/research", outdirec, gene) # ~/Code/research/PERT/COG0001
+direc = file.path(outdirec, gene) # ~/Code/research/PERT/COG0001 ... /tmp/outfiles/COG0001
 
 # samples * methods * iters
 methods = 6 # Number of clustering methods
 nsamples = length(readLines(file.path(direc, "0_.trans")))
-c = 4 # number of clusters to cut at
+c = 3 # number of clusters to cut at
 
 # Index this like:
 # clusts[i,j,] where i=perturbation+1, j=method
@@ -38,7 +38,6 @@ for (i in 0:perts){
     clusts[i+1,5,] <- as.character(cutree(hclust(dist(pca[2:6]), method="centroid"), k=c))
     clusts[i+1,6,] <- as.character(cutree(hclust(dist(pca[2:6]), method="ward"), k=c))
 }
-
 save(clusts, file=file.path(direc, paste(gene, "_clusters", sep="")))
 #ppcafile <- paste("PERT", ".trans", sep="")
 #upcafile <- paste("UNPERT", ".trans", sep="")
