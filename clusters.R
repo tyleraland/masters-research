@@ -7,38 +7,42 @@ library('mclust')
 library('ape')
 source("~/Code/research/cuttable.R")
 
-outdirec <- commandArgs(trailingOnly=T)[1]
-#outdirec = "PERT"
-gene <- commandArgs(trailingOnly=T)[2]
+indirec <- commandArgs(trailingOnly=T)[1]
+outdirec <- commandArgs(trailingOnly=T)[2]
+#outdirec = "/state/partition1/landt/"
+gene <- commandArgs(trailingOnly=T)[3]
 #gene = "COG0001"
-perts <- as.integer(commandArgs(trailingOnly=T)[3])
-#perts = 3
+perts <- as.integer(commandArgs(trailingOnly=T)[4])
+#perts = 1
 
-direc = file.path(outdirec, gene) # ~/Code/research/PERT/COG0001 ... /tmp/outfiles/COG0001
+indirec = file.path(indirec, gene) # /state/partition1/landt/COG0001
+outdirc = file.path(outdirec, gene) # ~/outfiles/COG0001
 
 # samples * methods * iters
 methods = 6 # Number of clustering methods
-nsamples = length(readLines(file.path(direc, "0_.trans")))
-c = 3 # number of clusters to cut at
+nsamples = length(readLines(file.path(indirec, paste("0_", gene, ".trans", sep=""))))
+c = 2 # number of clusters to cut at
 
 # Index this like:
 # clusts[i,j,] where i=perturbation+1, j=method
 # Note: i=0 is the unperturbed data
-clusts = array(rep(0,nsamples), dim=c(perts+1,methods,nsamples))
+clusts = array(rep(0,nsamples), dim=c(methods,nsamples))
 
 for (i in 0:perts){
-    sq <- read.tree(paste(direc, "/", as.character(i), "_", "cluster.tre",sep=""))
+    sq <- read.tree(paste(indirec, "/", as.character(i), "_", gene, "cluster.tre",sep=""))
     sq <- cutree(cuttable(sq), k=4)
-    clusts[i+1,1,] <- as.vector(sq[order(names(sq))])
+    clusts[1,] <- as.vector(sq[order(names(sq))])
 
-    pca <- read.csv(paste(direc, "/", as.character(i), "_", ".trans",sep=""), header=FALSE)
-    clusts[i+1,2,] <- as.character(cutree(hclust(dist(pca[2:6]), method="single"), k=c))
-    clusts[i+1,3,] <- as.character(cutree(hclust(dist(pca[2:6]), method="ave"), k=c))
-    clusts[i+1,4,] <- as.character(cutree(hclust(dist(pca[2:6]), method="complete"), k=c))
-    clusts[i+1,5,] <- as.character(cutree(hclust(dist(pca[2:6]), method="centroid"), k=c))
-    clusts[i+1,6,] <- as.character(cutree(hclust(dist(pca[2:6]), method="ward"), k=c))
+    pca <- read.csv(paste(indirec, "/", as.character(i), "_", gene, ".trans",sep=""), header=FALSE)
+    clusts[2,] <- as.character(cutree(hclust(dist(pca[2:6]), method="single"), k=c))
+    clusts[3,] <- as.character(cutree(hclust(dist(pca[2:6]), method="ave"), k=c))
+    clusts[4,] <- as.character(cutree(hclust(dist(pca[2:6]), method="complete"), k=c))
+    clusts[5,] <- as.character(cutree(hclust(dist(pca[2:6]), method="centroid"), k=c))
+    clusts[6,] <- as.character(cutree(hclust(dist(pca[2:6]), method="ward"), k=c))
+    write.table(clusts, file=paste(outdirec, "/", gene, "/cut", as.character(c), "_pert", as.character(i), sep=""))
 }
-save(clusts, file=file.path(direc, paste(gene, "_clusters", sep="")))
+#write.table(clusts, file=file.path(direc, paste(gene, "_clusters", sep="")))
+
 #ppcafile <- paste("PERT", ".trans", sep="")
 #upcafile <- paste("UNPERT", ".trans", sep="")
 #ppca <- read.csv(paste("~/Code/research/outfiles/", ppcafile, sep=""), header=FALSE)
