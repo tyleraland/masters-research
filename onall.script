@@ -10,7 +10,7 @@ for gene in `cat ~/COG_list`; do
 	#echo $gene
 	N=`expr $COUNT % 8`
 	#rocks run host compute-0-$N "bash /home/landt/Code/research/makeclusters.sh $gene 20 2>~/outfiles/$N-$gene-error >~/outfiles/$N-$gene-out" &
-	if [ ! `ls -a ~/gene_clusters | grep -m1 "$gene"` ]; then 
+	if [ ! `ls -a ~/outfiles | grep -m1 "$gene"` ]; then 
 		echo "compute-0-$N $gene"
 		rocks run host compute-0-$N "bash /home/landt/Code/research/makeclusters.sh $gene 10 2>~/errors/$N-$gene-error >~/errors/$N-$gene-out" &
 	fi
