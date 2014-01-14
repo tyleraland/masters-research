@@ -21,7 +21,7 @@ outdirc = file.path(outdirec, gene) # ~/outfiles/COG0001
 # samples * methods * iters
 methods = 6 # Number of clustering methods
 nsamples = length(readLines(file.path(indirec, paste("0_", gene, ".trans", sep=""))))
-c = 2 # number of clusters to cut at
+c = 3 # number of clusters to cut at
 
 # Index this like:
 # clusts[i,j,] where i=perturbation+1, j=method
@@ -30,7 +30,7 @@ clusts = array(rep(0,nsamples), dim=c(methods,nsamples))
 
 for (i in 0:perts){
     sq <- read.tree(paste(indirec, "/", as.character(i), "_", gene, "cluster.tre",sep=""))
-    sq <- cutree(cuttable(sq), k=4)
+    sq <- cutree(cuttable(sq), k=c)
     clusts[1,] <- as.vector(sq[order(names(sq))])
 
     pca <- read.csv(paste(indirec, "/", as.character(i), "_", gene, ".trans",sep=""), header=FALSE)

@@ -21,7 +21,7 @@ random.seed(rseed)
 #statfile = open(os.environ['HOME'] + "/" + os.path.dirname(outdir) + "/" + "statfile", 'w') 
 statfile = open(outdir + "statfile", 'w')
 statwriter = csv.writer(statfile, delimiter=',') 
-statwriter.writerow(["sample", "moved", "total"])
+statwriter.writerow(["sample", "moved", "total", "seed"])
 
 #treefile = open(os.environ['HOME'] + "/" + os.path.dirname(outdir) + "/" + gene + "_tree", 'w') # For later calculating branch lengths
 treefile = open(outdir + gene + "_tree", 'w') # For later calculating branch lengths

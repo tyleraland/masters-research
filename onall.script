@@ -4,20 +4,18 @@
 #
 
 COUNT=0
-for gene in `cat ~/COG_list`; do
+for gene in `cat ~/genes_coverage`; do
 	COUNT=`expr $COUNT + 1`
 #for j in `seq 0 123`;
 	#echo $gene
 	N=`expr $COUNT % 8`
 	#rocks run host compute-0-$N "bash /home/landt/Code/research/makeclusters.sh $gene 20 2>~/outfiles/$N-$gene-error >~/outfiles/$N-$gene-out" &
-	if [ ! `ls -a ~/outfiles | grep -m1 "$gene"` ]; then 
+#	if [ ! `ls -a ~/outfiles | grep -m1 "$gene"` ]; then 
+	#if [ ! -e ~/outfiles/$gene/dibs2 ]; then
+	#if [ ! -e ~/outfiles/$gene/edpls_all_reads ]; then
 		echo "compute-0-$N $gene"
-		rocks run host compute-0-$N "bash /home/landt/Code/research/makeclusters.sh $gene 10 2>~/errors/$N-$gene-error >~/errors/$N-$gene-out" &
-	fi
-	#sleep .2s
-	#rocks run host compute-0-$N "echo $gene"&
-	#do rocks run host compute-0-$i "echo `awk -F"t" '/^$i $j/{print $3}' argumentfile`"&
-	#do rocks run host compute-0-$i "echo $i"&
-	#sleep .1s
-	#done;
+		#rocks run host compute-0-$N "bash /home/landt/Code/research/makeclusters.sh $gene 10 2>~/errors/$N-$gene-error >~/errors/$N-$gene-out" &
+		rocks run host compute-0-$N "bash /home/landt/Code/research/edpl_analysis.sh $gene" &
+		#rocks run host compute-0-$N "bash echo $gene" &
+	#fi
 done;

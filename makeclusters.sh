@@ -25,6 +25,7 @@ if [ ! -d $OUTDIR/$GENE ]; then
 fi
 
 rm -r $TEMPDIR/$GENE/*
+touch $TEMPDIR/$GENE/dibs2
 
 echo "PERTURBING"
 # Produce perturbed .jplace files for GENE
@@ -36,12 +37,12 @@ echo "UNPERTURBED PCA"
 # Unperturbed data files live in $HOME/COGs/$GENE
 guppy pca --out-dir $TEMPDIR/$GENE --prefix 0\_$GENE $HOME/COGs/$GENE/*.jplace # Projects unperturbed data into PCA space, produces .trans file
 # Save .trans file
-cp $TEMPDIR/$GENE/0\_$GENE.trans $OUTDIR/$GENE/
+#cp $TEMPDIR/$GENE/0\_$GENE.trans $OUTDIR/$GENE/
 
 echo "UNPERTURBED SQUASH"
 guppy squash --out-dir $TEMPDIR/$GENE --prefix 0\_$GENE $HOME/COGs/$GENE/*.jplace > /dev/null # Output is 0_cluster.tre
 # Save .tre file
-cp $TEMPDIR/$GENE/0\_"$GENE"cluster.tre $OUTDIR/$GENE/
+#cp $TEMPDIR/$GENE/0\_"$GENE"cluster.tre $OUTDIR/$GENE/
 
 echo "PERTURBED PCA/SQUASH"
 # Each batch of perturbed SAMPLE_i.jplace have PCA, squash applied
@@ -62,4 +63,6 @@ Rscript clusters.R $TEMPDIR $OUTDIR $GENE $ITERS
 
 #cp $TEMPDIR/$GENE/0\_$GENE\_clusters /home/landt/gene_clusters2
 #cp $TEMPDIR/$GENE/statfile /home/landt/gene_clusters2/$GENE\_statfile
-cp $TEMPDIR/$GENE/statfile $OUTDIR/$GENE/statfile
+cp /state/partition1/landt/$GENE/* $OUTDIR/$GENE/
+
+#cp $TEMPDIR/$GENE/statfile $OUTDIR/$GENE/statfile

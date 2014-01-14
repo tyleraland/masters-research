@@ -48,5 +48,9 @@ for (g in 1:(length(genes))){
 #hist(stats[,5], ylab='number of genes', xlab='Moved Reads', main="Average number of moved reads by gene over 10 perturbations")
 #dev.off()
 
-edpls <- read.csv("~/outfiles/total_edpls.csv", header=T)
-hist(edpls[,2], ylab='number of genes', xlab='Total EDPL', main="Sum of EDPL among all reads in all samples, by gene")
+stats <- cbind(stats, read.csv("~/outfiles/total_edpls.csv", header=T)[,2:4], read.csv("gene_ave_identities.csv", header=T)[,2], read.csv("gut_pairwise_identities.csv", header=T)[,2], read.csv("~/outfiles/all_ave_phylo_diversity.csv", header=T)[,2])
+colnames(stats)[10] <- "ave_identity"
+colnames(stats)[11] <- "pairwise_percent_identity"
+colnames(stats)[12] <- "ave_phylo_div"
+#hist(edpls[,2], ylab='number of genes', xlab='Total EDPL', main="Sum of EDPL among all reads in all samples, by gene")
+
