@@ -1,3 +1,8 @@
+# Because the Squash clustering algorithm produces a non-ultrametric tree, and
+# the 'cutree' algorithm requires a merge ordering, we reconstruct that
+# ordering here.  Once applied, we can use cutree to partition the tree into
+# a clustering.
+
 cuttable <- function(x)
 {
     n <- length(x$tip.label)

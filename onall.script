@@ -1,17 +1,14 @@
-#for i in `seq 0 7`; 
-#for i in `seq 0 2`;
-#do for j in `seq 0 23`;
-#
-
+# This script is/was a workaround that submitted jobs to 
+# the rocks cluster while the scheduler was disabled
 COUNT=0
 for gene in `cat ~/genes_coverage`; do
+  # There are 8 compute nodes; each has several compute nodes
+  # This submits a job to the nodes in round-robin fashion
 	COUNT=`expr $COUNT + 1`
-#for j in `seq 0 123`;
-	#echo $gene
 	N=`expr $COUNT % 8`
 	#rocks run host compute-0-$N "bash /home/landt/Code/research/makeclusters.sh $gene 20 2>~/outfiles/$N-$gene-error >~/outfiles/$N-$gene-out" &
 #	if [ ! `ls -a ~/outfiles | grep -m1 "$gene"` ]; then 
-	#if [ ! -e ~/outfiles/$gene/dibs2 ]; then
+	if [ ! -e ~/outfiles/$gene/dibs ]; then
 	#if [ ! -e ~/outfiles/$gene/edpls_all_reads ]; then
 		echo "compute-0-$N $gene"
 		#rocks run host compute-0-$N "bash /home/landt/Code/research/makeclusters.sh $gene 10 2>~/errors/$N-$gene-error >~/errors/$N-$gene-out" &

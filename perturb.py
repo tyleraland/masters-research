@@ -7,7 +7,7 @@ from glob import glob
 import random
 
 # Assume: .jplace files are all of the form HOME/analysis/gene/sample.jplace
-# Usage: ./perturb.py iterations gene outdir
+# Usage: ./perturb.py iterations gene outdir rseed
 # **NOTE: outdir must include trailing '/' **
 
 # Tracks number of moved placements
@@ -18,15 +18,23 @@ rseed = int(sys.argv[4])
 random.seed(rseed)
 
 
-#statfile = open(os.environ['HOME'] + "/" + os.path.dirname(outdir) + "/" + "statfile", 'w') 
+# Also create a "statfile" csv to record how many reads were moved.  Also,
+# 'seed' is the random seed fed to this script.
 statfile = open(outdir + "statfile", 'w')
 statwriter = csv.writer(statfile, delimiter=',') 
 statwriter.writerow(["sample", "moved", "total", "seed"])
 
-#treefile = open(os.environ['HOME'] + "/" + os.path.dirname(outdir) + "/" + gene + "_tree", 'w') # For later calculating branch lengths
-treefile = open(outdir + gene + "_tree", 'w') # For later calculating branch lengths
+# For later calculating branch lengths
+treefile = open(outdir + gene + "_tree", 'w') 
 empty_tree = True
 
+# Each .jplace file's reads are inspected.  Each read has a list of candidate
+# placements, with (candidate, probability) pairs, where the sum of the
+# probabilities for that read sum to 1.  For each read, a random float is
+# generated, which is used to randomly reassign the read (by default, the
+# candidate with the highest probability is chosen).  To override this default
+# setting, the other candidate placements are removed, leaving only the new
+# winning placement.
 files = glob(os.environ['HOME'] + "/COGs/" + gene + "/*.jplace")
 for iter in range(1,iters+1):
     for filename in files:
@@ -56,12 +64,7 @@ for iter in range(1,iters+1):
                 moved += 1
         sample = os.path.basename(filename)[:-7] + "_" + str(iter)
         statwriter.writerow([os.path.basename(sample), moved, str(len(data["placements"])), str(rseed)])
-        #print("Moved " + str(moved) + " of " + str(len(data["placements"])) + " total placements for " + sample)
-        #print("outdir: " + outdir)
-        #print("sample: " + sample)
-        #outpath = os.environ['HOME'] + "/" + os.path.dirname(outdir) + "/" + sample + ".jplace"
         outpath = outdir + sample + ".jplace"
-        #print("outpath: " + outpath)
         out = open(outpath, 'w')
         out.write(json.dumps(data))
         out.close()

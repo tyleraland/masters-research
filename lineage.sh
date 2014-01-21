@@ -1,3 +1,4 @@
+# This is a one-off script, used to analyze the output of Ryan's "lineage" program
 for gene in COG0253 COG1052 COG0516 COG1472 COG4585 COG0190 COG1120 COG5000 COG1454; do
   a=`grep -c $gene /home/kodnerr/share/COG_test/lineage/Tyler_Confindent_scores.csv`
   echo "$gene confident: $a"

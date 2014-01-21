@@ -9,7 +9,7 @@ maps_to_pert <- function(row){
 }
 
 genes <- readLines("~/Code/research/genes_coverage")
-stats <- data.frame( array(0, dim=c(length(genes), 11)))
+stats <- data.frame( array(0, dim=c(length(genes), 13)))
 colnames(stats) <- c('gene', 'min_ari', 'max_ari', 'ave_ari', 'moved:total reads', 'average_moved' )
 stats[,1] <- genes
 for (g in 1:(length(genes))){
@@ -60,4 +60,6 @@ for (g in 1:(length(genes))){
 stats[,7:9] <- read.csv("~/outfiles/total_edpls.csv", header=T)[,2:4]
 stats[,10] <- read.csv("gut_pairwise_identities.csv", header=T)[,2]
 stats[,11] <- read.csv("~/outfiles/all_ave_phylo_diversity.csv", header=T)[,2]
-colnames(stats)[7:11] <- c("total_reads","total_edpl","branch_length","pairwise_percent_identity","ave_phylo_div")
+stats[,12:13] <- read.csv("gene_convexities.csv", header=T)[,2:3]
+ 
+colnames(stats)[7:13] <- c("total_reads","total_edpl","branch_length","pairwise_percent_identity","ave_phylo_div", "Convex Phylum-Taxa in Tree", "Total Taxa in Tree")
