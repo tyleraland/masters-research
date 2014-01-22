@@ -5,17 +5,20 @@
 
 library(ggplot2)
 
-# b: number of buckets
+# b: size of buckets
 # l: lower x-value
 # h: higher x-value
 # ds: data set to be used
 # Must also change the filename in calls to ggsave
 
-b = 5
+bucketplot <- function(b, l, h, ds, xlabel, ylabel="Average ARI for bucket", filenm){
 
-l = 20
-h = 65
-ds <- stats$pairwise_percent_identity
+# b = 5
+
+# l = 20
+# h = 65
+# ds <- stats$pairwise_percent_identity
+
 vec <- rep(0,length(seq(l,h-b,b)))
 for (i in seq(l,h-b,b)){
   ins <- ds > i & ds <= i+b
@@ -24,9 +27,10 @@ for (i in seq(l,h-b,b)){
 df <- data.frame(seq(l,h-b,b), vec)
 colnames(df) <- c("bucket","ave_ave")
 
-ggplot(df, aes(x=bucket,y=ave_ave,group=1)) + geom_point() + xlab("Lower-bound percent identity") + ylab("Average average-ARI for bucket") + ylim(.5,1.0)
-ggsave(filename="~/Code/research/graphs/Average_Average_ARI_by_percent_identity_bucket.jpeg")
+ggplot(df, aes(x=bucket,y=ave_ave,group=1)) + geom_point() + xlab(xlabel) + ylab(ylabel) + ylim(.5,1.0)
+ggsave(filename=filenm)
 
+}
 # Several examples follow.  Admittedly, this functionality should have been put
 # into a function call, but that didn't happen
 
