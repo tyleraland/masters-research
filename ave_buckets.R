@@ -12,7 +12,7 @@ stats <- read.csv("statsfile.csv", header=T)
 # ds: data set to be used
 # Must also change the filename in calls to ggsave
 
-bucketplot <- function(b, l, h, ds, xlabel, ylabel="Average ARI for bucket", filenm){
+bucketplot <- function(b, l, h, ds, xlabel, ylabel="Average ARI for bucket"){
 
 # b = 5
 
@@ -28,9 +28,9 @@ for (i in seq(l,h-b,b)){
 df <- data.frame(seq(l,h-b,b), vec)
 colnames(df) <- c("bucket","ave_ave")
 
-ggplot(df, aes(x=bucket,y=ave_ave,group=1)) + geom_point() + xlab(xlabel) + ylab(ylabel) + ylim(.5,1.0)
-ggsave(filename=filenm)
-
+g <- ggplot(df, aes(x=bucket,y=ave_ave,group=1)) + geom_point() + xlab(xlabel) + ylab(ylabel) + ylim(.5,1.0)
+#ggsave(filename=filenm)
+return(g)
 }
 # Several examples follow.  Admittedly, this functionality should have been put
 # into a function call, but that didn't happen
