@@ -33,8 +33,16 @@ Ancillary Scripts
 
 Data files
 - genes_coverage
+- - A list of the 280 genes with hits for all 111 microbiome samples
 - gene_convexities.csv
+- - Output from grab_taxmaps.sh; Tree convexity at phylum level uses column 2
+- - ... divided by column 3
 - Human-Microbiome-Metadata.csv
-- gene_convexities.csv
+- - Metadata for the original Human Microbiome metagenome.  Each row specifies
+- - ... a unique human sample and information about that sample, such as country
+- - ... of origin, sex, etc.
 - gene_stats.csv
+- - The conglomeration of various metrics for the 280 genes with good coverage
 - gut_pairwise_identities.csv
+- - The pairwise percent identity for the genes with good coverage, produced by
+- - ... the Geneious software program.
