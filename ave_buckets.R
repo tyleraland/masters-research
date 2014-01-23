@@ -4,6 +4,7 @@
 # the bucketed points
 
 library(ggplot2)
+stats <- read.csv("statsfile.csv", header=T)
 
 # b: size of buckets
 # l: lower x-value
