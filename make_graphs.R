@@ -19,9 +19,9 @@ df <- data.frame(edpl=log(stats$total_edpl, base=10), ave_ari=stats$ave_ari)
 ggplot(df, aes(x=edpl, y=ave_ari)) + geom_point() + xlab("Log(EDPL) for Gene") + ylab("Average ARI")
 ggsave(filename="log-edpl-scatterplot.png")
 
-df <- data.frame(conv=log(1 + stats[,12]/stats[,13]), ave_ari=stats$ave_ari)
+df <- data.frame(conv=log(stats[,12]/stats[,13]), ave_ari=stats$ave_ari)
 ggplot(df, aes(x=conv, y=ave_ari)) + geom_point() + xlab("Tree Convexity for Gene") + ylab("Average ARI")
-ggsave(filename="convexity-scatterplot.png")
+ggsave(filename="log-convexity-scatterplot.png")
 
 qplot(stats$ave_ari, binwidth=.1, xlab="Average ARI", ylab="Frequency")
 ggsave(filename="ave-ari-hist.png")
