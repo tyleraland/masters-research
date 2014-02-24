@@ -59,7 +59,9 @@ for (g in 1:(length(genes))){
 #   a gene's samples.  Produced by calc_fpd.sh
 stats[,7:9] <- read.csv("~/outfiles/total_edpls.csv", header=T)[,2:4]
 stats[,10] <- read.csv("gut_pairwise_identities.csv", header=T)[,2]
-stats[,11] <- read.csv("~/outfiles/all_ave_phylo_diversity.csv", header=T)[,2]
+stats[,11] <- read.csv("all_ave_phylo_diversity.csv", header=T)[,2]
 stats[,12:13] <- read.csv("gene_convexities.csv", header=T)[,2:3]
+stats[,14] <- read.csv("all_PD.csv", header=T)[,2]
+stats[,15] <- read.csv("all_AW_PD.csv", header=T)[,2]
  
-colnames(stats)[7:13] <- c("total_reads","total_edpl","branch_length","pairwise_percent_identity","ave_phylo_div", "Convex Phylum-Taxa in Tree", "Total Taxa in Tree")
+colnames(stats)[7:15] <- c("total_reads","total_edpl","branch_length","pairwise_percent_identity","ave_phylo_div", "Convex Phylum-Taxa in Tree", "Total Taxa in Tree", "Phylo Diversity", "Abundance Weighted Phylo Diversity")
