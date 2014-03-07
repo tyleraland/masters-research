@@ -8,24 +8,24 @@ stats <- read.csv("statsfile.csv", header=T)
 #ggsave(filename="reads-scatterplot.png")
 
 df <- data.frame(logreads=log(stats$total_reads, base=10), ave_ari=stats$ave_ari)
-s1 <- ggplot(df, aes(x=logreads, y=ave_ari)) + geom_point() + xlab("log(Reads) per Gene") + ylab("Average ARI") + xlim(2.9, 4.5) + annotate("text", 2.9, 1.0, label="1a")
+s1 <- ggplot(df, aes(x=logreads, y=ave_ari)) + geom_point() + xlab("log(Reads) per Gene") + ylab("Average ARI") + xlim(2.9, 4.5) + labs(title="a")
 #ggsave(filename="log-reads-scatterplot.png")
 
 df <- data.frame(edpl=log(stats$total_edpl, base=10), ave_ari=stats$ave_ari)
-s2 <- ggplot(df, aes(x=edpl, y=ave_ari)) + geom_point() + xlab("log(EDPL) per Gene") + ylab("Average ARI") + xlim(1.0, 4.0) + annotate("text", 1.0, 1.0, label="2a")
+s2 <- ggplot(df, aes(x=edpl, y=ave_ari)) + geom_point() + xlab("log(EDPL) per Gene") + ylab("Average ARI") + xlim(1.0, 4.0) + labs(title="b")
 #ggsave(filename="log-edpl-scatterplot.png")
 
 df <- data.frame(conv=log(stats[,12]/stats[,13]), ave_ari=stats$ave_ari)
-s3 <- ggplot(df, aes(x=conv, y=ave_ari)) + geom_point() + xlab("log(Convexity) per Gene") + ylab("Average ARI") + xlim(-6.5, -2.5) + annotate("text", -6.5, 1.0, label="3a")
+s3 <- ggplot(df, aes(x=conv, y=ave_ari)) + geom_point() + xlab("log(Convexity) per Gene") + ylab("Average ARI") + xlim(-6.5, -2.5) + labs(title="c")
 #ggsave(filename="log-convexity-scatterplot.png")
 
 # Bucketed plots
 b1 <- bucketplot(.1, 2.9, 4.5, log(stats[,7], base=10), "Bucketed log(Reads) per Gene")
-b1 <- b1 + annotate("text", 2.9, 1.0, label="1b")
+b1 <- b1 + labs(title="d")
 b2 <- bucketplot(.5, 1.0, 4, log(stats[,8], base=10), "Bucketed log(EDPL) per Gene")
-b2 <- b2 + annotate("text", 1.0, 1.0, label="2b")
+b2 <- b2 + labs(title="e")
 b3 <- bucketplot(.033, -6.5, -2.5, log(stats[,12]/stats[,13]), "Bucketed log(convexity) per gene")
-b3 <- b3 + annotate("text", -6.5, 1.0, label="3b")
+b3 <- b3 + labs(title="f")
 
 qplot(stats$ave_ari, binwidth=.1, xlab="Average ARI", ylab="Frequency")
 ggsave(filename="ave-ari-hist.png")
